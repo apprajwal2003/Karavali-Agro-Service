@@ -18,19 +18,15 @@ export default function AdminProductsPage() {
           </Link>
         </div>
       </div>
-      <div className="overflow-auto px-20 py-4">
+      <div className="overflow-auto px-20 py-4 grid grid-cols-2 gap-4 bg-gradient-to-br from-gray-800 to-gray-900">
         {products.map((product: Product) => (
           <div
             key={product.productId}
-            className="border-2 border-black p-4 mb-4 rounded-lg"
+            className="flex flex-col justify-between p-4 mb-4 rounded-xl backdrop-blur-xl bg-white/10 border border-white/30 shadow-md text-white"
           >
             <div className="grid grid-cols-4 gap-4 divide-x divide-gray-300">
               <div className="row-span-2 border-r border-gray-300">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-auto"
-                />
+                <img src="/fert.png" alt="fert.png" className="w-50 h-auto" />
               </div>
               <div className="px-2 border-r border-gray-300">
                 <strong>Name:</strong> {product.name}

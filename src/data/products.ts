@@ -9,7 +9,7 @@ const products: Product[] = [
     price: 25.5,
     stock: 120,
     brand: "AgroGrow",
-    image: "/images/nitrogen-fertilizer.jpg",
+    image: "/fert.png",
   },
   {
     productId: "PEST2001",
