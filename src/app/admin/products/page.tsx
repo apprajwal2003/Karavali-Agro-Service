@@ -1,21 +1,17 @@
-import { AdminSearchBar } from "@/components";
+import { AddProductWrapperModal, AdminSearchBar } from "@/components";
 import Link from "next/link";
 import products from "@/data/products";
 import { Product } from "@/types/products";
+import { Suspense } from "react";
 
-export default function AdminProductsPage() {
+export default async function AdminProductsPage() {
   return (
-    <div className="flex flex-col">
-      <div className="flex items-center justify-between h-22 w-full px-20 py-4">
+    <div className="flex flex-col ">
+      <div className="flex items-center justify-between bg-white h-22 w-full px-20 py-4 sticky top-22 z-10">
         <div className="text-2xl font-bold">Products</div>
         <div className="flex items-center gap-4">
           <AdminSearchBar />
-          <Link
-            href="admin/products/addproduct"
-            className="bg-green-500 rounded-lg px-4 py-3 admin-button text-white"
-          >
-            + Add Product
-          </Link>
+          <AddProductWrapperModal />
         </div>
       </div>
       <div className="overflow-auto px-20 py-4 grid grid-cols-2 gap-4 bg-gradient-to-br from-gray-800 to-gray-900">

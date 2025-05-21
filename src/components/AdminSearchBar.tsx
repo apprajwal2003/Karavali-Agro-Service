@@ -10,7 +10,7 @@ export default function AdminSearchBar() {
       />
       <Link
         href="admin/products/addproduct"
-        className="bg-green-500 rounded-lg px-4 py-3 admin-button text-white"
+        className="bg-blue-500 rounded-lg px-4 py-3 custom-button hover:bg-blue-900 text-white"
       >
         Search
       </Link>

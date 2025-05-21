@@ -31,7 +31,7 @@ export default function AdminNavbar() {
             <Link
               key={path}
               href={path}
-              className={`admin-button ${
+              className={`custom-button admin-button ${
                 isActive && "bg-green-800 rounded-lg px-2 py-2"
               }`}
             >
