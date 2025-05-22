@@ -1,12 +1,23 @@
 "use client";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
 export default function AddProductWrapperModal() {
   const [showModal, setShowModal] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleModalToggle = () => {
     setShowModal(!showModal);
+  };
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -24,23 +35,29 @@ export default function AddProductWrapperModal() {
         <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
           <div className="bg-white rounded-lg shadow-lg p-6 w-auto relative">
             {/* Close Button */}
-            <button
-              onClick={handleModalToggle}
-              className="absolute top-2 right-3 px-2 rounded-lg transition-all duration-500 text-gray-500 hover:text-white hover:bg-red-600 text-4xl"
-            >
+            <button onClick={handleModalToggle} className="close-button">
               &times;
             </button>
 
             {/* Modal Content */}
             <h2 className="text-2xl font-semibold mb-4">Product Details</h2>
             <div className="grid grid-cols-4 grid-rows-8 gap-4">
-              <div className="relative row-span-4 col-span-2 w-full h-full">
-                <Image
-                  src="/fert.png"
-                  alt="product image"
-                  fill
-                  className="object-contain"
+              <div className="relative row-span-5 col-span-2 w-full h-full max-w-md max-h-96 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center overflow-hidden">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                  onChange={handleImageUpload}
                 />
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt="Uploaded"
+                    className="object-contain w-full h-full"
+                  />
+                ) : (
+                  <span className="text-4xl text-gray-400 z-0">+</span>
+                )}
               </div>
               <div className="text-center text-gray-700 col-span-2 row-span-5 flex flex-col justify-around">
                 <div className="flex items-center gap-2">
@@ -78,9 +95,7 @@ export default function AddProductWrapperModal() {
                   <input id="stock" type="number" className="input-box" />
                 </div>
               </div>
-              <div className="col-span-2 flex items-center justify-center">
-                <div>+ Add Image</div>
-              </div>
+
               <div className="row-span-2 col-span-full">
                 <div>Description</div>
                 <textarea
@@ -89,7 +104,10 @@ export default function AddProductWrapperModal() {
                 ></textarea>
               </div>
               <div className="flex items-center justify-end gap-4 col-span-full">
-                <button className="custom-button hover:bg-red-600">
+                <button
+                  className="custom-button hover:bg-red-600"
+                  onClick={handleModalToggle}
+                >
                   Cancel
                 </button>
                 <button className="custom-button hover:bg-green-600">

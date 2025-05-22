@@ -1,12 +1,12 @@
-import { AddProductWrapperModal, AdminSearchBar } from "@/components";
-import Link from "next/link";
+import { AdminSearchBar } from "@/components";
+import AddProductWrapperModal from "./AddProductWrapperModal";
 import products from "@/data/products";
 import { Product } from "@/types/products";
-import { Suspense } from "react";
+import Image from "next/image";
 
 export default async function AdminProductsPage() {
   return (
-    <div className="flex flex-col ">
+    <div className="flex flex-col">
       <div className="flex items-center justify-between bg-white h-22 w-full px-20 py-4 sticky top-22 z-10">
         <div className="text-2xl font-bold">Products</div>
         <div className="flex items-center gap-4">
@@ -14,7 +14,7 @@ export default async function AdminProductsPage() {
           <AddProductWrapperModal />
         </div>
       </div>
-      <div className="overflow-auto px-20 py-4 grid grid-cols-2 gap-4 bg-gradient-to-br from-gray-800 to-gray-900">
+      <div className="overflow-auto px-20 py-4 grid grid-cols-1 md:grid-cols-2 gap-4 bg-gradient-to-br from-gray-800 to-gray-900">
         {products.map((product: Product) => (
           <div
             key={product.productId}
@@ -22,8 +22,15 @@ export default async function AdminProductsPage() {
           >
             <div className="grid grid-cols-4 gap-4 divide-x divide-gray-300">
               <div className="row-span-2 border-r border-gray-300">
-                <img src="/fert.png" alt="fert.png" className="w-50 h-auto" />
+                <Image
+                  src="/fert.png"
+                  alt="fertilizer"
+                  width={200}
+                  height={0}
+                  className="w-50 h-auto rounded-xl"
+                />
               </div>
+
               <div className="px-2 border-r border-gray-300">
                 <strong>Name:</strong> {product.name}
               </div>
