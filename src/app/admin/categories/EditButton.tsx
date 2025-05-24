@@ -4,24 +4,25 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 
-type DeleteProps = {
+type EditProps = {
   id: string;
   name: string;
 };
 
-export default function DeleteButton({ id, name }: DeleteProps) {
+export default function EditButton({ id, name }: EditProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [newName, setNewName] = useState(name.trim());
   const router = useRouter();
 
   const handleModalToggle = () => {
     setShowModal(!showModal);
     setError("");
+    setNewName(name.trim());
     setLoading(false);
   };
 
-  // Close the modal when the Escape key is pressed
   useEffect(() => {
     if (!showModal) return;
 
@@ -29,28 +30,28 @@ export default function DeleteButton({ id, name }: DeleteProps) {
       if (e.key === "Escape") {
         handleModalToggle();
       }
-
-      if (e.key === "Enter") {
-        handleDelete();
-      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [showModal]);
 
-  const handleDelete = async () => {
+  const handleEdit = async () => {
     try {
       setLoading(true);
       setError("");
 
       const response = await fetch(`/api/categories/${id}`, {
-        method: "DELETE",
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ newName: newName.trim() }),
       });
 
       if (!response.ok) {
         const data = await response.json();
-        setError(data.error || "Failed to delete category");
+        setError(data.error || "Failed to edit category");
         setLoading(false);
         return;
       }
@@ -58,6 +59,7 @@ export default function DeleteButton({ id, name }: DeleteProps) {
       setLoading(false);
       setShowModal(false);
       setError("");
+
       router.refresh();
     } catch (error) {
       setError("Something went wrong");
@@ -69,18 +71,18 @@ export default function DeleteButton({ id, name }: DeleteProps) {
     <>
       <button
         onClick={handleModalToggle}
-        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 w-full sm:w-auto"
+        className="bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-600 w-full sm:w-auto"
       >
-        {loading ? "Deleting...." : "Delete"}
+        {loading ? "Updating...." : "Update"}
       </button>
 
       {showModal &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md ">
             <div className="bg-white rounded-lg shadow-lg p-6 w-auto relative">
               <div className="flex items-center justify-between gap-4">
                 <h2 className="text-2xl font-semibold justify-around px-10 pt-10 mb-4">
-                  Delete {name}?
+                  Update {name} to
                 </h2>
                 <button
                   onClick={handleModalToggle}
@@ -88,6 +90,22 @@ export default function DeleteButton({ id, name }: DeleteProps) {
                 >
                   &times;
                 </button>
+              </div>
+
+              <div>
+                <input
+                  type="text"
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  placeholder="Enter new category name"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleEdit();
+                    }
+                  }}
+                />
               </div>
 
               {error && <p className="text-red-600 mt-2">{error}</p>}
@@ -98,14 +116,14 @@ export default function DeleteButton({ id, name }: DeleteProps) {
                   onClick={handleModalToggle}
                   disabled={loading}
                 >
-                  No
+                  Cancel
                 </button>
                 <button
                   className="custom-button bg-green-400 hover:bg-green-600 cursor-pointer"
-                  onClick={handleDelete}
+                  onClick={handleEdit}
                   disabled={loading}
                 >
-                  {loading ? "Deleting..." : "Yes, Delete"}
+                  {loading ? "Updating..." : "Update"}
                 </button>
               </div>
             </div>
