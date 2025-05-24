@@ -60,7 +60,7 @@ export default function AddCategoryWrapperModal() {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
+        <div className="fixed inset-0 z-100 flex items-center justify-center backdrop-blur-md">
           <div className="bg-white rounded-lg shadow-lg p-6 w-auto relative">
             <button
               onClick={handleModalToggle}

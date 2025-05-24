@@ -16,7 +16,18 @@ export async function POST(request: Request) {
       );
     }
 
-    const newCategory = new Category({ name: name.trim() });
+    // Check if the category already exists
+    const existingCategory = await Category.findOne({
+      name: name.trim().toUpperCase(),
+    });
+    if (existingCategory) {
+      return NextResponse.json(
+        { error: "Category already exists" },
+        { status: 409 }
+      );
+    }
+
+    const newCategory = new Category({ name: name.trim().toUpperCase() });
     await newCategory.save();
 
     return NextResponse.json(
@@ -30,5 +41,3 @@ export async function POST(request: Request) {
     );
   }
 }
-
-export async function DELETE() {}

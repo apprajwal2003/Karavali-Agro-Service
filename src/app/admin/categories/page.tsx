@@ -2,6 +2,7 @@ import { AdminSearchBar } from "@/components";
 import AddCategoryWrapperModal from "./AddCategoryWrapperModal";
 import { Category } from "@/models/category";
 import { connectDB } from "@/lib/mongodb";
+import DeleteButton from "./DeleteButton";
 
 export default async function AdminCategoriesPage() {
   await connectDB();
@@ -31,9 +32,11 @@ export default async function AdminCategoriesPage() {
                 <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full sm:w-auto">
                   Edit
                 </button>
-                <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 w-full sm:w-auto">
-                  Delete
-                </button>
+
+                <DeleteButton
+                  id={cat._id.toString()}
+                  name={cat.name.toString()}
+                />
               </div>
             </div>
           ))}
