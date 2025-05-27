@@ -3,6 +3,7 @@ import AddProductWrapperModal from "./AddProductWrapperModal";
 import DeleteButton from "./DeleteButton";
 import { connectDB } from "@/lib/mongodb";
 import Image from "next/image";
+import EditButton from "./EditButton";
 
 export const revalidate = 0;
 
@@ -94,9 +95,16 @@ export default async function AdminProductsPage() {
             </div>
 
             <div className="flex justify-end gap-2 mt-4">
-              <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                Edit
-              </button>
+              <EditButton
+                id={product._id}
+                name={product.name}
+                brand={product.brand}
+                stock={product.stock}
+                description={product.description}
+                category={product.category?._id || ""}
+                image={product.image}
+                price={product.price}
+              />
               <DeleteButton id={product._id} name={product.name} />
             </div>
           </div>
