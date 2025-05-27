@@ -1,6 +1,5 @@
 "use client";
-// This component is a button that triggers a modal for deleting a category.
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 
@@ -15,31 +14,13 @@ export default function DeleteButton({ id, name }: DeleteProps) {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
-  const handleModalToggle = () => {
-    setShowModal(!showModal);
+  const handleModalToggle = useCallback(() => {
+    setShowModal((prev) => !prev);
     setError("");
     setLoading(false);
-  };
+  }, []);
 
-  // Close the modal when the Escape key is pressed
-  useEffect(() => {
-    if (!showModal) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        handleModalToggle();
-      }
-
-      if (e.key === "Enter") {
-        handleDelete();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [showModal]);
-
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
@@ -64,7 +45,22 @@ export default function DeleteButton({ id, name }: DeleteProps) {
       setError("Something went wrong");
       setLoading(false);
     }
-  };
+  }, [id, router]);
+
+  useEffect(() => {
+    if (!showModal) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        handleModalToggle();
+      } else if (e.key === "Enter") {
+        handleDelete();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showModal, handleModalToggle, handleDelete]);
 
   return (
     <>

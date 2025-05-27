@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function AddProductWrapperModal() {
   const [showModal, setShowModal] = useState(false);
@@ -18,8 +19,9 @@ export default function AddProductWrapperModal() {
     []
   );
   const router = useRouter();
+
   useEffect(() => {
-    if (!showModal) return; // only fetch when modal opens
+    if (!showModal) return;
 
     const fetchCategories = async () => {
       try {
@@ -129,7 +131,7 @@ export default function AddProductWrapperModal() {
       setImageFile(null);
       setError("");
       setLoading(false);
-      router.refresh(); // Refresh the page to show the new product
+      router.refresh();
       alert("Product added successfully!");
     } catch (err) {
       console.error(err);
@@ -160,7 +162,6 @@ export default function AddProductWrapperModal() {
             <h2 className="text-2xl font-semibold mb-4">Product Details</h2>
 
             <div className="flex flex-wrap flex-col sm:flex-row gap-4">
-              {/* Image container with fixed width */}
               <div className="relative w-[280px] h-96 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center overflow-hidden flex-shrink-0">
                 <input
                   type="file"
@@ -169,17 +170,19 @@ export default function AddProductWrapperModal() {
                   onChange={handleImageUpload}
                 />
                 {imagePreview ? (
-                  <img
+                  <Image
                     src={imagePreview}
                     alt="Uploaded"
+                    width={280}
+                    height={384}
                     className="object-contain w-full h-full"
+                    unoptimized
                   />
                 ) : (
                   <span className="text-4xl text-gray-400 z-0">+</span>
                 )}
               </div>
 
-              {/* Inputs container with fixed width */}
               <div className="flex flex-col justify-around w-[320px] min-w-[300px] max-w-md flex-shrink-0">
                 <div className="flex items-center gap-2">
                   <label htmlFor="name" className="min-w-[80px]">
@@ -255,7 +258,6 @@ export default function AddProductWrapperModal() {
                 </div>
               </div>
 
-              {/* Description textarea and buttons */}
               <div className="w-full sm:flex-grow">
                 <div>Description</div>
                 <textarea

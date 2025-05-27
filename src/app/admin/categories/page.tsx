@@ -5,9 +5,23 @@ import { connectDB } from "@/lib/mongodb";
 import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";
 
+export const revalidate = 0;
+
+type LeanCategory = {
+  _id: string;
+  name: string;
+  __v: number;
+};
+
 export default async function AdminCategoriesPage() {
   await connectDB();
-  const categories = await Category.find().lean();
+  const categories = await Category.find();
+
+  const safeCategories: LeanCategory[] = categories.map((cat) => ({
+    _id: cat._id,
+    name: cat.name,
+    __v: cat.__v,
+  }));
 
   return (
     <div className="flex flex-col">
@@ -23,22 +37,15 @@ export default async function AdminCategoriesPage() {
 
       <div className="overflow-auto p-4 sm:p-6 md:p-8 bg-gradient-to-br from-gray-800 to-gray-900 min-h-screen">
         <div className="grid gap-4">
-          {categories.map((cat: any) => (
+          {safeCategories.map((cat) => (
             <div
               key={cat._id}
               className="max-w-md w-full mx-auto flex flex-col md:flex-row justify-between items-start md:items-center p-4 rounded-xl backdrop-blur-xl bg-white/10 border border-white/30 shadow-md text-white"
             >
               <div className="mb-2 md:mb-0">{cat.name}</div>
               <div className="flex gap-2 w-full md:w-auto">
-                <EditButton
-                  id={cat._id.toString()}
-                  name={cat.name.toString()}
-                />
-
-                <DeleteButton
-                  id={cat._id.toString()}
-                  name={cat.name.toString()}
-                />
+                <EditButton id={cat._id} name={cat.name} />
+                <DeleteButton id={cat._id} name={cat.name} />
               </div>
             </div>
           ))}

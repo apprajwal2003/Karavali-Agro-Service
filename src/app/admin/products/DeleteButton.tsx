@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 
@@ -14,29 +14,13 @@ export default function DeleteButton({ id, name }: DeleteProps) {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
-  const handleModalToggle = () => {
+  const handleModalToggle = useCallback(async () => {
     setShowModal(!showModal);
     setError("");
     setLoading(false);
-  };
-
-  useEffect(() => {
-    if (!showModal) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        handleModalToggle();
-      }
-      if (e.key === "Enter") {
-        handleDelete();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [showModal]);
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
@@ -62,7 +46,23 @@ export default function DeleteButton({ id, name }: DeleteProps) {
       setError("Something went wrong");
       setLoading(false);
     }
-  };
+  }, [id, router]);
+
+  useEffect(() => {
+    if (!showModal) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        handleModalToggle();
+      }
+      if (e.key === "Enter") {
+        handleDelete();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showModal, handleModalToggle, handleDelete]);
 
   return (
     <>

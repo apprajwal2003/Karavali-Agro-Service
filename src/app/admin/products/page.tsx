@@ -2,6 +2,9 @@ import { AdminSearchBar } from "@/components";
 import AddProductWrapperModal from "./AddProductWrapperModal";
 import DeleteButton from "./DeleteButton";
 import { connectDB } from "@/lib/mongodb";
+import Image from "next/image";
+
+export const revalidate = 0;
 
 interface CategoryType {
   _id: string;
@@ -22,10 +25,12 @@ interface ProductType {
 export default async function AdminProductsPage() {
   await connectDB();
   const { Product } = await import("@/models/product");
-  const { Category } = await import("@/models/category");
-  const rawProducts = await Product.find({}).populate("category").lean();
+  const { Category } = await import("@/models/category"); // Ensure Category is imported for type safety
+  void Category; // Prevent unused import warning
 
-  const products: ProductType[] = rawProducts.map((product: any) => ({
+  const rawProducts = await Product.find({}).populate("category");
+
+  const products: ProductType[] = rawProducts.map((product) => ({
     _id: product._id.toString(),
     name: product.name,
     brand: product.brand,
@@ -58,11 +63,13 @@ export default async function AdminProductsPage() {
             className="flex flex-col justify-between p-4 mb-4 rounded-xl backdrop-blur-xl bg-white/10 border border-white/30 shadow-md text-white"
           >
             <div className="grid grid-cols-4 gap-4 divide-x divide-gray-300">
-              <div className="row-span-2 border-r border-gray-300">
-                <img
+              <div className="row-span-2 border-r border-gray-300 ">
+                <Image
                   src={product.image}
                   alt={product.name}
-                  className="object-contain w-full h-full rounded-xl"
+                  width={150}
+                  height={150}
+                  className="object-contain rounded-xl"
                 />
               </div>
 

@@ -1,6 +1,5 @@
 import { connectDB } from "@/lib/mongodb";
 import { Category } from "@/models/category";
-import { read } from "fs";
 import { NextResponse } from "next/server";
 
 export async function DELETE(
@@ -49,7 +48,7 @@ export async function DELETE(
 
 export async function PUT(
   req: Request,
-  { params }: { params: Promise<{ id: string; newName: String }> }
+  { params }: { params: Promise<{ id: string; newName: string }> }
 ) {
   try {
     await connectDB();

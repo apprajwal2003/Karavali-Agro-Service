@@ -56,6 +56,7 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
+    console.error("Error adding category:", error);
     return NextResponse.json(
       { error: "Failed to add category" },
       { status: 500 }
