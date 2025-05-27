@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function AddProductWrapperModal() {
   const [showModal, setShowModal] = useState(false);
@@ -13,6 +14,25 @@ export default function AddProductWrapperModal() {
   const [price, setPrice] = useState<number | null>(null);
   const [stock, setStock] = useState<number | null>(null);
   const [description, setDescription] = useState("");
+  const [categories, setCategories] = useState<{ _id: string; name: string }[]>(
+    []
+  );
+  const router = useRouter();
+  useEffect(() => {
+    if (!showModal) return; // only fetch when modal opens
+
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/categories");
+        const data = await res.json();
+        setCategories(data);
+      } catch (err) {
+        console.error("Failed to load categories", err);
+      }
+    };
+
+    fetchCategories();
+  }, [showModal]);
 
   const handleModalToggle = () => {
     if (showModal) {
@@ -109,6 +129,8 @@ export default function AddProductWrapperModal() {
       setImageFile(null);
       setError("");
       setLoading(false);
+      router.refresh(); // Refresh the page to show the new product
+      alert("Product added successfully!");
     } catch (err) {
       console.error(err);
       setError("Something went wrong. Please try again.");
@@ -187,13 +209,19 @@ export default function AddProductWrapperModal() {
                   <label htmlFor="category" className="min-w-[80px]">
                     Category:
                   </label>
-                  <input
+                  <select
                     id="category"
-                    type="text"
                     className="input-box"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                  />
+                  >
+                    <option value="">Select category</option>
+                    {categories.map((cat) => (
+                      <option key={cat._id} value={cat._id}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="flex items-center gap-2">
                   <label htmlFor="price" className="min-w-[80px]">

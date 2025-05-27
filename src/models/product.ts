@@ -19,7 +19,7 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   image: {
-    type: Buffer,
+    type: String, // ✅ Changed from Buffer to String
     required: true,
   },
   stock: {

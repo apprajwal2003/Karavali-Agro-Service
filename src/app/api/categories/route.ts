@@ -1,7 +1,23 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
-import { Category } from "@/models/category"; // You can move your model to /models for reuse
+import { Category } from "@/models/category";
 
+// GET: Fetch all categories (for dropdown)
+export async function GET() {
+  try {
+    await connectDB();
+
+    const categories = await Category.find({}, { name: 1 }); // only _id and name
+    return NextResponse.json(categories, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to fetch categories" },
+      { status: 500 }
+    );
+  }
+}
+
+// POST: Add a new category
 export async function POST(request: Request) {
   try {
     await connectDB();
@@ -16,10 +32,11 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check if the category already exists
+    // Check if category exists (case-insensitive)
     const existingCategory = await Category.findOne({
       name: name.trim().toUpperCase(),
     });
+
     if (existingCategory) {
       return NextResponse.json(
         { error: "Category already exists" },
@@ -27,7 +44,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const newCategory = new Category({ name: name.trim().toUpperCase() });
+    const newCategory = new Category({
+      name: name.trim().toUpperCase(),
+    });
+
     await newCategory.save();
 
     return NextResponse.json(
