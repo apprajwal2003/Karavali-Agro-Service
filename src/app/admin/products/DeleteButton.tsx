@@ -58,6 +58,7 @@ export default function DeleteButton({ id, name }: DeleteProps) {
       router.refresh();
       alert("Product deleted successfully");
     } catch (error) {
+      console.error("Error deleting product:", error);
       setError("Something went wrong");
       setLoading(false);
     }

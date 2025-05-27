@@ -71,7 +71,7 @@ export default function EditButton({ id, name }: EditProps) {
 
       router.refresh();
     } catch (error) {
-      setError("Something went wrong");
+      setError(error + "Something went wrong");
       setLoading(false);
     }
   };

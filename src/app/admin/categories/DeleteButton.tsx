@@ -60,6 +60,7 @@ export default function DeleteButton({ id, name }: DeleteProps) {
       setError("");
       router.refresh();
     } catch (error) {
+      console.error("Delete error:", error);
       setError("Something went wrong");
       setLoading(false);
     }

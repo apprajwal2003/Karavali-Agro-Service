@@ -44,7 +44,8 @@ export default function AddCategoryWrapperModal() {
       setShowModal(false);
       setName("");
       router.refresh();
-    } catch (err) {
+    } catch (error) {
+      console.error("Error adding category:", error);
       setError("Something went wrong");
       setLoading(false);
     }
