@@ -30,6 +30,15 @@ export default function EditButton({ id, name }: EditProps) {
       if (e.key === "Escape") {
         handleModalToggle();
       }
+
+      if (e.key === "Enter") {
+        e.preventDefault();
+        if (newName.trim().toUpperCase() !== name.trim().toUpperCase()) {
+          handleEdit();
+        } else {
+          setError("No changes made to the category name.");
+        }
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);

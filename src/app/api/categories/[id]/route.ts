@@ -58,7 +58,7 @@ export async function PUT(
     // Parse the request body
     const body = await req.json();
     // Check if the body contains the required fields
-    console.log(body.newName);
+
     if (!body.newName.trim()) {
       return NextResponse.json(
         { error: "Name and description are required" },
@@ -84,6 +84,7 @@ export async function PUT(
     const existingName = await Category.findOne({
       name: body.newName.trim().toUpperCase(),
     });
+
     if (existingName && existingName._id.toString() !== id) {
       return NextResponse.json(
         { error: "Category name already exists" },
