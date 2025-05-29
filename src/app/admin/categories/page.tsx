@@ -18,7 +18,7 @@ export default async function AdminCategoriesPage() {
   const categories = await Category.find();
 
   const safeCategories: LeanCategory[] = categories.map((cat) => ({
-    _id: cat._id,
+    _id: cat._id.toString(),
     name: cat.name,
     __v: cat.__v,
   }));

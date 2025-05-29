@@ -47,7 +47,7 @@ export async function DELETE(
 }
 
 export async function PUT(
-  req: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string; newName: string }> }
 ) {
   try {
@@ -55,7 +55,7 @@ export async function PUT(
     //extract the id from params
     const { id } = await params;
     // Parse the request body
-    const body = await req.json();
+    const body = await request.json();
     // Check if the body contains the required fields
 
     if (!body.newName.trim()) {

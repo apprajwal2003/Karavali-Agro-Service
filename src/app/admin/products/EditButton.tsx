@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { createPortal } from "react-dom";
 
 type EditProps = {
   id: string;
@@ -40,6 +41,7 @@ export default function EditButton({
   );
   const router = useRouter();
 
+  //update modal category
   useEffect(() => {
     if (!showModal) return;
 
@@ -62,6 +64,7 @@ export default function EditButton({
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) {
+      setError("Please select image");
       return;
     }
     setError("");
@@ -78,8 +81,8 @@ export default function EditButton({
       !newName.trim() ||
       !newBrand.trim() ||
       !newCategory.trim() ||
-      newPrice === null ||
-      newStock === null
+      isNaN(newPrice) ||
+      isNaN(newStock)
     ) {
       setError("All fields are required");
       return;
@@ -90,7 +93,9 @@ export default function EditButton({
       brand.trim() == newBrand.trim() &&
       category.trim() == newCategory.trim() &&
       price == newPrice &&
-      stock == newStock
+      stock == newStock &&
+      description == newDescription &&
+      imageFile == null
     ) {
       setError("No changes are made!");
       return;
@@ -98,21 +103,17 @@ export default function EditButton({
 
     setLoading(true);
     setError("");
-
-    if (!imageFile) {
-      setError("Image is required");
-      setLoading(false);
-      return;
-    }
-    if (imageFile.size > 2 * 1024 * 1024) {
-      setError("Image size must be less than 2MB");
-      setLoading(false);
-      return;
-    }
-    if (!["image/jpeg", "image/png", "image/gif"].includes(imageFile.type)) {
-      setError("Only JPEG, PNG, and GIF images are allowed");
-      setLoading(false);
-      return;
+    if (imageFile) {
+      if (imageFile.size > 2 * 1024 * 1024) {
+        setError("Image size must be less than 2MB");
+        setLoading(false);
+        return;
+      }
+      if (!["image/jpeg", "image/png", "image/gif"].includes(imageFile.type)) {
+        setError("Only JPEG, PNG, and GIF images are allowed");
+        setLoading(false);
+        return;
+      }
     }
 
     try {
@@ -123,16 +124,18 @@ export default function EditButton({
       formData.append("price", newPrice.toString());
       formData.append("stock", newStock.toString());
       formData.append("description", newDescription);
-      formData.append("image", imageFile);
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
 
-      const result = await fetch("/api/products", {
-        method: "POST",
+      const result = await fetch(`/api/products/${id}`, {
+        method: "PUT",
         body: formData,
       });
 
       if (!result.ok) {
         const data = await result.json();
-        setError(data.error || "Failed to add product");
+        setError(data.error || "Failed to update product details!");
         setLoading(false);
         return;
       }
@@ -140,7 +143,8 @@ export default function EditButton({
       setError("");
       setLoading(false);
       router.refresh();
-      alert("Product added successfully!");
+      setShowModal(false);
+      alert("Product updated successfully!");
     } catch (err) {
       console.error(err);
       setError("Something went wrong. Please try again.");
@@ -151,146 +155,149 @@ export default function EditButton({
   return (
     <>
       <div
-        className="bg-green-500 custom-button hover:bg-green-800 text-white"
+        className="bg-blue-500 custom-button hover:bg-blue-600 text-white"
         onClick={handleModalToggle}
       >
-        + Add Product
+        Edit
       </div>
 
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-auto relative max-w-[900px] mx-4">
-            <button
-              onClick={handleModalToggle}
-              className="close-button absolute top-3 right-3 text-2xl font-bold"
-            >
-              &times;
-            </button>
+      {typeof window !== "undefined" &&
+        showModal &&
+        createPortal(
+          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-auto relative max-w-[900px] mx-4">
+              <button
+                onClick={handleModalToggle}
+                className="close-button absolute top-3 right-3 text-2xl font-bold"
+              >
+                &times;
+              </button>
 
-            <h2 className="text-2xl font-semibold mb-4">
-              Edit Product Details
-            </h2>
+              <h2 className="text-2xl font-semibold mb-4">
+                Edit Product Details
+              </h2>
 
-            <div className="flex flex-wrap flex-col sm:flex-row gap-4">
-              <div className="relative w-[280px] h-96 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center overflow-hidden flex-shrink-0">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                  onChange={handleImageUpload}
-                />
-                {imagePreview ? (
-                  <Image
-                    src={imagePreview}
-                    alt="Uploaded"
-                    width={280}
-                    height={384}
-                    className="object-contain w-full h-full"
-                    unoptimized
-                  />
-                ) : (
-                  <span className="text-4xl text-gray-400 z-0">+</span>
-                )}
-              </div>
-
-              <div className="flex flex-col justify-around w-[320px] min-w-[300px] max-w-md flex-shrink-0">
-                <div className="flex items-center gap-2">
-                  <label htmlFor="name" className="min-w-[80px]">
-                    Name:
-                  </label>
+              <div className="flex flex-wrap flex-col sm:flex-row gap-4">
+                <div className="relative w-[280px] h-96 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center overflow-hidden flex-shrink-0">
                   <input
-                    id="name"
-                    type="text"
-                    className="input-box"
-                    value={newName}
-                    onChange={(e) => setNewName(e.target.value)}
+                    type="file"
+                    accept="image/*"
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                    onChange={handleImageUpload}
                   />
+                  {imagePreview ? (
+                    <Image
+                      src={imagePreview}
+                      alt="Uploaded"
+                      width={280}
+                      height={384}
+                      className="object-contain w-full h-full"
+                      unoptimized
+                    />
+                  ) : (
+                    <span className="text-4xl text-gray-400 z-0">+</span>
+                  )}
                 </div>
-                <div className="flex items-center gap-2">
-                  <label htmlFor="brand" className="min-w-[80px]">
-                    Brand:
-                  </label>
-                  <input
-                    id="brand"
-                    type="text"
-                    className="input-box"
-                    value={newBrand}
-                    onChange={(e) => setNewBrand(e.target.value)}
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <label htmlFor="category" className="min-w-[80px]">
-                    Category:
-                  </label>
-                  <select
-                    id="category"
-                    className="input-box"
-                    value={newCategory}
-                    onChange={(e) => setNewCategory(e.target.value)}
-                  >
-                    <option value="">Select category</option>
-                    {categories.map((cat) => (
-                      <option key={cat._id} value={cat._id}>
-                        {cat.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex items-center gap-2">
-                  <label htmlFor="price" className="min-w-[80px]">
-                    Price:
-                  </label>
-                  <input
-                    id="price"
-                    type="number"
-                    className="input-box"
-                    value={newPrice ?? null}
-                    onChange={(e) => setNewPrice(parseFloat(e.target.value))}
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <label htmlFor="stock" className="min-w-[80px]">
-                    Stock:
-                  </label>
-                  <input
-                    id="stock"
-                    type="number"
-                    className="input-box"
-                    value={newStock ?? null}
-                    onChange={(e) => setNewStock(parseInt(e.target.value))}
-                  />
-                </div>
-              </div>
 
-              <div className="w-full sm:flex-grow">
-                <div>Description</div>
-                <textarea
-                  className="w-full h-24 p-2 border border-gray-300 rounded-lg"
-                  placeholder="Enter product description"
-                  value={newDescription ?? ""}
-                  onChange={(e) => setNewDescription(e.target.value)}
-                />
-                {error && <p className="text-red-600 mt-2">{error}</p>}
+                <div className="flex flex-col justify-around w-[320px] min-w-[300px] max-w-md flex-shrink-0">
+                  <div className="flex items-center gap-2">
+                    <label htmlFor="name" className="min-w-[80px]">
+                      Name:
+                    </label>
+                    <input
+                      id="name"
+                      type="text"
+                      className="input-box"
+                      value={newName}
+                      onChange={(e) => setNewName(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label htmlFor="brand" className="min-w-[80px]">
+                      Brand:
+                    </label>
+                    <input
+                      id="brand"
+                      type="text"
+                      className="input-box"
+                      value={newBrand}
+                      onChange={(e) => setNewBrand(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label htmlFor="category" className="min-w-[80px]">
+                      Category:
+                    </label>
+                    <select
+                      id="category"
+                      className="input-box"
+                      value={newCategory}
+                      onChange={(e) => setNewCategory(e.target.value)}
+                    >
+                      <option value="">Select category</option>
+                      {categories.map((cat) => (
+                        <option key={cat._id} value={cat._id}>
+                          {cat.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label htmlFor="price" className="min-w-[80px]">
+                      Price:
+                    </label>
+                    <input
+                      id="price"
+                      type="number"
+                      className="input-box"
+                      value={newPrice ?? null}
+                      onChange={(e) => setNewPrice(parseFloat(e.target.value))}
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label htmlFor="stock" className="min-w-[80px]">
+                      Stock:
+                    </label>
+                    <input
+                      id="stock"
+                      type="number"
+                      className="input-box"
+                      value={newStock ?? null}
+                      onChange={(e) => setNewStock(parseInt(e.target.value))}
+                    />
+                  </div>
+                </div>
 
-                <div className="flex items-center justify-end gap-4 mt-4">
-                  <button
-                    className="custom-button hover:bg-red-600 bg-red-400"
-                    onClick={handleModalToggle}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="custom-button hover:bg-green-600 bg-green-400"
-                    onClick={handleSubmit}
-                  >
-                    {loading ? "Adding...." : "Add Product"}
-                  </button>
+                <div className="w-full sm:flex-grow">
+                  <div>Description</div>
+                  <textarea
+                    className="w-full h-24 p-2 border border-gray-300 rounded-lg"
+                    placeholder="Enter product description"
+                    value={newDescription ?? ""}
+                    onChange={(e) => setNewDescription(e.target.value)}
+                  />
+                  {error && <p className="text-red-600 mt-2">{error}</p>}
+
+                  <div className="flex items-center justify-end gap-4 mt-4">
+                    <button
+                      className="custom-button hover:bg-red-600 bg-red-400"
+                      onClick={handleModalToggle}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="custom-button hover:bg-green-600 bg-green-400"
+                      onClick={handleSubmit}
+                    >
+                      {loading ? "Updating..." : "Update"}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </>
   );
 }
