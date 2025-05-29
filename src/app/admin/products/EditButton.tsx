@@ -29,12 +29,12 @@ export default function EditButton({
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [newName, setnewName] = useState(name);
-  const [newBrand, setnewBrand] = useState(brand);
-  const [newCategory, setnewCategory] = useState(category);
-  const [newPrice, setnewPrice] = useState(price);
-  const [newStock, setnewStock] = useState(stock);
-  const [newDescription, setbewDescription] = useState(description);
+  const [newName, setNewName] = useState(name);
+  const [newBrand, setNewBrand] = useState(brand);
+  const [newCategory, setNewCategory] = useState(category);
+  const [newPrice, setNewPrice] = useState(price);
+  const [newStock, setNewStock] = useState(stock);
+  const [newDescription, setNewDescription] = useState(description);
   const [categories, setCategories] = useState<{ _id: string; name: string }[]>(
     []
   );
@@ -62,8 +62,6 @@ export default function EditButton({
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) {
-      setImageFile(null);
-      setImagePreview(null);
       return;
     }
     setError("");
@@ -77,13 +75,24 @@ export default function EditButton({
 
   const handleSubmit = async () => {
     if (
-      !name.trim() ||
-      !brand.trim() ||
-      !category.trim() ||
-      price === null ||
-      stock === null
+      !newName.trim() ||
+      !newBrand.trim() ||
+      !newCategory.trim() ||
+      newPrice === null ||
+      newStock === null
     ) {
       setError("All fields are required");
+      return;
+    }
+
+    if (
+      name.trim() == newName.trim() &&
+      brand.trim() == newBrand.trim() &&
+      category.trim() == newCategory.trim() &&
+      price == newPrice &&
+      stock == newStock
+    ) {
+      setError("No changes are made!");
       return;
     }
 
@@ -108,12 +117,12 @@ export default function EditButton({
 
     try {
       const formData = new FormData();
-      formData.append("name", name);
-      formData.append("brand", brand);
-      formData.append("category", category);
-      formData.append("price", price.toString());
-      formData.append("stock", stock.toString());
-      formData.append("description", description);
+      formData.append("name", newName);
+      formData.append("brand", newBrand);
+      formData.append("category", newCategory);
+      formData.append("price", newPrice.toString());
+      formData.append("stock", newStock.toString());
+      formData.append("description", newDescription);
       formData.append("image", imageFile);
 
       const result = await fetch("/api/products", {
@@ -128,15 +137,6 @@ export default function EditButton({
         return;
       }
 
-      setShowModal(false);
-      setName("");
-      setBrand("");
-      setCategory("");
-      setPrice(null);
-      setStock(null);
-      setDescription("");
-      setImagePreview(null);
-      setImageFile(null);
       setError("");
       setLoading(false);
       router.refresh();
@@ -202,8 +202,8 @@ export default function EditButton({
                     id="name"
                     type="text"
                     className="input-box"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
                   />
                 </div>
                 <div className="flex items-center gap-2">
@@ -214,8 +214,8 @@ export default function EditButton({
                     id="brand"
                     type="text"
                     className="input-box"
-                    value={brand}
-                    onChange={(e) => setBrand(e.target.value)}
+                    value={newBrand}
+                    onChange={(e) => setNewBrand(e.target.value)}
                   />
                 </div>
                 <div className="flex items-center gap-2">
@@ -225,8 +225,8 @@ export default function EditButton({
                   <select
                     id="category"
                     className="input-box"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value)}
                   >
                     <option value="">Select category</option>
                     {categories.map((cat) => (
@@ -244,12 +244,8 @@ export default function EditButton({
                     id="price"
                     type="number"
                     className="input-box"
-                    value={price ?? ""}
-                    onChange={(e) =>
-                      setPrice(
-                        e.target.value ? parseFloat(e.target.value) : null
-                      )
-                    }
+                    value={newPrice ?? null}
+                    onChange={(e) => setNewPrice(parseFloat(e.target.value))}
                   />
                 </div>
                 <div className="flex items-center gap-2">
@@ -260,10 +256,8 @@ export default function EditButton({
                     id="stock"
                     type="number"
                     className="input-box"
-                    value={stock ?? ""}
-                    onChange={(e) =>
-                      setStock(e.target.value ? parseInt(e.target.value) : null)
-                    }
+                    value={newStock ?? null}
+                    onChange={(e) => setNewStock(parseInt(e.target.value))}
                   />
                 </div>
               </div>
@@ -273,8 +267,8 @@ export default function EditButton({
                 <textarea
                   className="w-full h-24 p-2 border border-gray-300 rounded-lg"
                   placeholder="Enter product description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  value={newDescription ?? ""}
+                  onChange={(e) => setNewDescription(e.target.value)}
                 />
                 {error && <p className="text-red-600 mt-2">{error}</p>}
 
