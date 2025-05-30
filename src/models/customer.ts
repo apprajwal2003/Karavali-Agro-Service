@@ -23,6 +23,12 @@ const customerSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    role: {
+      type: String,
+      enum: ["admin", "user"],
+      default: "user",
+      required: true,
+    },
   },
   { timestamps: true }
 );
