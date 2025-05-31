@@ -4,6 +4,7 @@ import DeleteButton from "./DeleteButton";
 import { connectDB } from "@/lib/mongodb";
 import Image from "next/image";
 import EditButton from "./EditButton";
+import ReadMoreWrapper from "./ReadMoreWrapper";
 
 export const revalidate = 0;
 
@@ -61,7 +62,7 @@ export default async function AdminProductsPage() {
         {products.map((product) => (
           <div
             key={product._id}
-            className="flex flex-col justify-between p-4 mb-4 rounded-xl backdrop-blur-xl bg-white/10 border border-white/30 shadow-md text-white"
+            className="flex flex-col justify-between p-4 mb-4 rounded-xl backdrop-blur-xl bg-white/10 border border-white/30 shadow-md text-white transition-all duration-300 ease-in-out min-h-[260px]"
           >
             <div className="grid grid-cols-4 gap-4 divide-x divide-gray-300">
               <div className="row-span-2 border-r border-gray-300 ">
@@ -83,14 +84,16 @@ export default async function AdminProductsPage() {
               <div className="px-2">
                 <strong>Category:</strong> {product.category?.name || "N/A"}
               </div>
-              <div className="px-2 border-r border-gray-300">
-                <strong>Price:</strong> ₹{product.price}
+              <div className="flex flex-col justify-around px-2 border-r border-gray-300">
+                <div>
+                  <strong>Price:</strong> ₹{product.price}
+                </div>
+                <div>
+                  <strong>Stock:</strong> {product.stock}
+                </div>
               </div>
-              <div className="px-2 border-r border-gray-300">
-                <strong>Stock:</strong> {product.stock}
-              </div>
-              <div className="px-2">
-                <strong>Description:</strong> {product.description}
+              <div className="col-span-2">
+                <ReadMoreWrapper text={product.description} />
               </div>
             </div>
 
