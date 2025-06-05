@@ -25,7 +25,7 @@ export default async function AdminCategoriesPage() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center justify-between bg-white h-22 w-full px-20 py-4 sticky top-22 z-10">
+      <div className="flex items-center justify-between bg-white h-22 w-full px-20 py-4 sticky top-22">
         <h1 className="text-xl md:text-2xl font-bold mb-2 md:mb-0">
           Categories
         </h1>

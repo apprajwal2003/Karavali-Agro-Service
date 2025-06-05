@@ -5,11 +5,11 @@ export default function AdminSearchBar() {
     <>
       <input
         type="text"
-        placeholder="Search..."
-        className="border border-gray-300 rounded-lg px-4 py-2"
+        placeholder="Product Name..."
+        className="border border-gray-300 rounded-lg px-3 py-2 text-sm md:text-base"
       />
       <Link
-        href="admin/products/addproduct"
+        href="admin/products/"
         className="bg-blue-400 rounded-lg px-4 py-3 custom-button hover:bg-blue-600 text-white"
       >
         Search
