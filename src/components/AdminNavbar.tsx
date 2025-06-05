@@ -2,9 +2,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 export default function AdminNavbar() {
   const pathname = usePathname();
+  const [sideBar, setSideBar] = useState(false);
 
   const navItems = [
     { name: "Products", path: "/admin/products" },
@@ -12,6 +14,11 @@ export default function AdminNavbar() {
     { name: "Orders", path: "/admin/orders" },
     { name: "Users", path: "/admin/users" },
   ];
+
+  const handleSideBar = () => {
+    setSideBar(!sideBar);
+  };
+
   return (
     <header className="flex items-center justify-between bg-green-600 h-22 w-full px-4 py-4 z-10 sticky top-0">
       <Link href="/">
@@ -20,7 +27,7 @@ export default function AdminNavbar() {
           alt="Logo"
           width={100}
           height={50}
-          className="h-20 w-auto px-4 "
+          className="h-20 w-auto px-4"
         />
       </Link>
       <div className="flex items-center gap-4 px-5 py-5 text-white text-xl">

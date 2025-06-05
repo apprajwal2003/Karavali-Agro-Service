@@ -45,11 +45,19 @@ export async function POST(request: Request) {
       );
     }
 
+    //create category
     const newCategory = new Category({
       name: name.trim().toUpperCase(),
     });
 
-    await newCategory.save();
+    const result = await newCategory.save();
+
+    if (!result) {
+      return NextResponse.json(
+        { message: "Unable to save category in the database" },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json(
       { message: "Category added successfully" },
@@ -58,7 +66,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Error adding category:", error);
     return NextResponse.json(
-      { error: "Failed to add category" },
+      { error: "Failed to add category from server" },
       { status: 500 }
     );
   }

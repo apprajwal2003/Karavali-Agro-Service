@@ -58,11 +58,11 @@ export default async function AdminProductsPage() {
         </div>
       </div>
 
-      <div className="overflow-auto px-20 py-4 grid grid-cols-1 md:grid-cols-2 gap-4 bg-gradient-to-br from-gray-800 to-gray-900">
+      <div className="min-h-screen overflow-auto px-20 py-4 grid grid-cols-1 md:grid-cols-2 gap-4 bg-gradient-to-br from-gray-800 to-gray-900">
         {products.map((product) => (
           <div
             key={product._id}
-            className="flex flex-col justify-between p-4 mb-4 rounded-xl backdrop-blur-xl bg-white/10 border border-white/30 shadow-md text-white transition-all duration-300 ease-in-out min-h-[260px]"
+            className="flex flex-col justify-between p-4 mb-4 rounded-xl backdrop-blur-xl bg-white/10 border border-white/30 shadow-md text-white transition-all duration-300 ease-in-out max-h-[260px]"
           >
             <div className="grid grid-cols-4 gap-4 divide-x divide-gray-300">
               <div className="row-span-2 border-r border-gray-300 ">
