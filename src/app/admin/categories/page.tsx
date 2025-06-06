@@ -1,9 +1,8 @@
-import { AdminSearchBar } from "@/components";
+import CategorySearchBar from "./CategorySearchBar";
 import AddCategoryWrapperModal from "./AddCategoryWrapperModal";
 import { Category } from "@/models/category";
 import { connectDB } from "@/lib/mongodb";
-import DeleteButton from "./DeleteButton";
-import EditButton from "./EditButton";
+import CategoryCard from "./CategoryCard";
 
 export const revalidate = 0;
 
@@ -25,31 +24,18 @@ export default async function AdminCategoriesPage() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center justify-between bg-white h-22 w-full px-20 py-4 sticky top-22">
-        <h1 className="text-xl md:text-2xl font-bold mb-2 md:mb-0">
-          Categories
-        </h1>
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
-          <AdminSearchBar />
+      <div className="flex flex-wrap items-center justify-between bg-white h-auto w-full px-4 md:px-20 py-4 sticky top-18 z-45 gap-2">
+        <div className="hidden md:block text-2xl font-bold">Categories</div>
+        <div className="flex items-center gap-2 flex-1 justify-end">
+          <CategorySearchBar />
           <AddCategoryWrapperModal />
         </div>
       </div>
 
-      <div className="overflow-auto p-4 sm:p-6 md:p-8 bg-gradient-to-br from-gray-800 to-gray-900 min-h-screen">
-        <div className="grid gap-4">
-          {safeCategories.map((cat) => (
-            <div
-              key={cat._id}
-              className="max-w-md w-full mx-auto flex flex-col md:flex-row justify-between items-start md:items-center p-4 rounded-xl backdrop-blur-xl bg-white/10 border border-white/30 shadow-md text-white"
-            >
-              <div className="mb-2 md:mb-0">{cat.name}</div>
-              <div className="flex gap-2 w-full md:w-auto">
-                <EditButton id={cat._id} name={cat.name} />
-                <DeleteButton id={cat._id} name={cat.name} />
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="min-h-screen overflow-auto px-4 md:px-20 py-4 pt-24 grid grid-cols-1 md:grid-cols-2 gap-6 bg-gradient-to-br from-gray-800 to-gray-900">
+        {safeCategories.map((category) => (
+          <CategoryCard key={category._id} category={category} />
+        ))}
       </div>
     </div>
   );

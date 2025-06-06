@@ -154,7 +154,8 @@ export default function AddProductWrapperModal() {
           <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-4xl relative">
             <button
               onClick={handleModalToggle}
-              className="absolute top-3 right-3 text-2xl font-bold"
+              className="close-button absolute top-2 right-2 text-2xl cursor-pointer"
+              disabled={loading}
             >
               &times;
             </button>

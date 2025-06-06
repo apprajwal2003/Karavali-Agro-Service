@@ -84,6 +84,7 @@ export default function DeleteButton({ id, name }: DeleteProps) {
                 <button
                   onClick={handleModalToggle}
                   className="close-button absolute top-2 right-2 text-2xl cursor-pointer"
+                  disabled={loading}
                 >
                   &times;
                 </button>

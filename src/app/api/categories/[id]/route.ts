@@ -23,8 +23,9 @@ export async function PUT(
 
     // Parse the request body
     const body = await request.json();
+
     // Check if the body contains the required fields
-    if (!body.newName.trim()) {
+    if (!body.newName?.trim()) {
       return NextResponse.json(
         { error: "New name is required" },
         { status: 400 }
@@ -43,11 +44,28 @@ export async function PUT(
     // Check if the new name is already taken
     const existingName = await Category.findOne({
       name: body.newName.trim().toUpperCase(),
+      _id: { $ne: id }, // Exclude current category from the check
     });
     if (existingName) {
       return NextResponse.json(
         { error: "Category name already exists" },
         { status: 400 }
+      );
+    }
+
+    //check if products with the current category exists
+    const products = await Product.find({ category: id });
+
+    // If there are products and user hasn't confirmed to update them
+    if (products.length > 0 && !body.updateProducts) {
+      return NextResponse.json(
+        {
+          error: "CONFIRM_UPDATE",
+          message:
+            "This category has associated products. Do you want to update all products to use the new category name?",
+          productsCount: products.length,
+        },
+        { status: 409 }
       );
     }
 
@@ -59,6 +77,7 @@ export async function PUT(
       },
       { new: true } // Return the updated document
     );
+
     //handle update failure
     if (!updatedCategory) {
       return NextResponse.json(
@@ -66,7 +85,24 @@ export async function PUT(
         { status: 500 }
       );
     }
-    //successful update response
+
+    // If user confirmed to update products
+    if (body.updateProducts && products.length > 0) {
+      await Product.updateMany(
+        { category: id },
+        { $set: { categoryName: body.newName.trim().toUpperCase() } }
+      );
+
+      return NextResponse.json(
+        {
+          message: "Category and all associated products updated successfully",
+          updatedProductsCount: products.length,
+        },
+        { status: 200 }
+      );
+    }
+
+    //successful update response (no products to update)
     return NextResponse.json(
       { message: "Category updated successfully" },
       { status: 200 }

@@ -54,23 +54,25 @@ export default function AddCategoryWrapperModal() {
   return (
     <>
       <div
-        className="bg-green-500 custom-button hover:bg-green-800 text-white cursor-pointer"
+        className="bg-green-500 custom-button hover:bg-green-800 text-white px-2 py-1 flex"
         onClick={handleModalToggle}
       >
-        + Add Category
+        +<div className="max-md:hidden pl-2"> Add Category</div>
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 z-100 flex items-center justify-center backdrop-blur-md">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-auto relative">
+        <div className="fixed inset-0 z-60 flex items-start justify-center px-2 py-4 sm:px-4 backdrop-blur-md overflow-y-auto mt-[4.5rem]">
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-4xl relative">
             <button
               onClick={handleModalToggle}
-              className="close-button absolute top-2 right-2 text-2xl"
+              className="close-button absolute top-2 right-2 text-2xl cursor-pointer"
+              disabled={loading}
             >
               &times;
             </button>
-
-            <h2 className="text-2xl font-semibold mb-4">Category Details</h2>
+            <h2 className="text-xl sm:text-2xl font-semibold mb-4">
+              Category Details
+            </h2>
 
             <div className="flex items-center gap-2">
               <label htmlFor="name" className="min-w-[80px]">
