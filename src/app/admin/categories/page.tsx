@@ -32,7 +32,7 @@ export default async function AdminCategoriesPage() {
         </div>
       </div>
 
-      <div className="min-h-screen overflow-auto px-4 md:px-20 py-4 pt-24 grid grid-cols-1 md:grid-cols-2 gap-6 bg-gradient-to-br from-gray-800 to-gray-900">
+      <div className="overflow-auto px-4 md:px-20 py-4 pt-24 grid grid-cols-1 md:grid-cols-2 gap-6 bg-gradient-to-br from-gray-800 to-gray-900">
         {safeCategories.map((category) => (
           <CategoryCard key={category._id} category={category} />
         ))}

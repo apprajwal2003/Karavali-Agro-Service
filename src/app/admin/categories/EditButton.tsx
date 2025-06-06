@@ -110,7 +110,7 @@ export default function EditButton({ id, name }: EditProps) {
 
       {showModal &&
         createPortal(
-          <div className="fixed inset-0 z-60 flex items-start justify-center px-2 py-4 sm:px-4 backdrop-blur-md overflow-y-auto mt-[4.5rem]">
+          <div className="fixed inset-0 z-60 flex items-start justify-center px-4 py-4 sm:px-4 backdrop-blur-md overflow-y-auto mt-[4.5rem]">
             <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-4xl relative">
               <button
                 onClick={handleModalToggle}
@@ -169,7 +169,7 @@ export default function EditButton({ id, name }: EditProps) {
 
       {showConfirmModal &&
         createPortal(
-          <div className="fixed inset-0 z-60 flex items-start justify-center px-2 py-4 sm:px-4 backdrop-blur-md overflow-y-auto mt-[4.5rem]">
+          <div className="fixed inset-0 z-60 flex items-start justify-center px-4 py-4 sm:px-4 backdrop-blur-md overflow-y-auto mt-[4.5rem] ">
             <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-4xl relative">
               <button
                 onClick={() => {

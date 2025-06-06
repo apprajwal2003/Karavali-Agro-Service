@@ -14,10 +14,10 @@ export default async function CategoryCard({
   return (
     <div
       key={category._id}
-      className="max-w-md w-full mx-auto flex flex-col md:flex-row justify-between items-start md:items-center p-4 rounded-xl backdrop-blur-xl bg-white/10 border border-white/30 shadow-md text-white"
+      className="max-w-md w-full mx-auto flex flex-col md:flex-row justify-between md:items-center p-4 rounded-xl backdrop-blur-xl bg-white/10 border border-white/30 shadow-md text-white"
     >
       <div className="mb-2 md:mb-0">{category.name}</div>
-      <div className="flex gap-2 w-full md:w-auto">
+      <div className="flex gap-2 w-full md:w-auto justify-end">
         <EditButton id={category._id} name={category.name} />
         <DeleteButton id={category._id} name={category.name} />
       </div>

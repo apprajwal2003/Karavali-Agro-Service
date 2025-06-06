@@ -75,11 +75,11 @@ export default function DeleteButton({ id, name }: DeleteProps) {
 
       {showModal &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md px-4">
             <div className="bg-white rounded-lg shadow-lg p-6 w-auto relative">
               <div className="flex items-center justify-between gap-4">
                 <h2 className="text-2xl font-semibold justify-around px-10 pt-10 mb-4">
-                  Delete {name}?
+                  <span className="text-red-600">Delete:</span> {name}?
                 </h2>
                 <button
                   onClick={handleModalToggle}

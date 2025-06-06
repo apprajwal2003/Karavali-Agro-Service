@@ -61,7 +61,7 @@ export default function AdminNavbar() {
       >
         {/* Hamburger icon */}
         <svg
-          className="fill-current h-6 w-6"
+          className="fill-current h-6 w-6 "
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -86,35 +86,47 @@ export default function AdminNavbar() {
 
       {/* Sidebar menu - visible only on small screens and when sideBar is true */}
       {sideBar && (
-        <div className="fixed top-0 right-0 h-full w-64 bg-green-700 shadow-lg z-20 p-6 flex flex-col gap-6 md:hidden">
-          {navItems.map(({ name, path }) => {
-            const isActive = pathname === path;
-            return (
-              <Link
-                key={path}
-                href={path}
-                onClick={() => setSideBar(false)} // close sidebar on click
-                className={`text-white text-xl ${
-                  isActive ? "bg-green-800 rounded-lg px-2 py-2" : ""
-                }`}
-              >
-                {name}
-              </Link>
-            );
-          })}
-          <Link
-            href="/admin/profile"
-            className="flex items-center mt-auto"
+        <div className="fixed inset-0 z-20 md:hidden">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/50"
             onClick={() => setSideBar(false)}
+          />
+
+          {/* Sidebar */}
+          <div
+            className="absolute right-0 top-0 h-full w-64 bg-green-700 shadow-lg p-6 flex flex-col gap-6 z-30"
+            onClick={(e) => e.stopPropagation()} // Prevent click bubbling
           >
-            <Image
-              src="/logo.png"
-              height={50}
-              width={50}
-              alt="profile photo"
-              className="h-12 w-12 rounded-full border-2 border-white"
-            />
-          </Link>
+            {navItems.map(({ name, path }) => {
+              const isActive = pathname === path;
+              return (
+                <Link
+                  key={path}
+                  href={path}
+                  onClick={() => setSideBar(false)}
+                  className={`text-white text-xl ${
+                    isActive ? "bg-green-800 rounded-lg px-2 py-2" : ""
+                  }`}
+                >
+                  {name}
+                </Link>
+              );
+            })}
+            <Link
+              href="/admin/profile"
+              className="flex items-center mt-auto"
+              onClick={() => setSideBar(false)}
+            >
+              <Image
+                src="/logo.png"
+                height={50}
+                width={50}
+                alt="profile photo"
+                className="h-12 w-12 rounded-full border-2 border-white"
+              />
+            </Link>
+          </div>
         </div>
       )}
     </header>
