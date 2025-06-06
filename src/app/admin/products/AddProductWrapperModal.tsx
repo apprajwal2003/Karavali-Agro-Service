@@ -22,7 +22,6 @@ export default function AddProductWrapperModal() {
 
   useEffect(() => {
     if (!showModal) return;
-
     const fetchCategories = async () => {
       try {
         const res = await fetch("/api/categories");
@@ -32,7 +31,6 @@ export default function AddProductWrapperModal() {
         console.error("Failed to load categories", err);
       }
     };
-
     fetchCategories();
   }, [showModal]);
 
@@ -87,11 +85,13 @@ export default function AddProductWrapperModal() {
       setLoading(false);
       return;
     }
+
     if (imageFile.size > 2 * 1024 * 1024) {
       setError("Image size must be less than 2MB");
       setLoading(false);
       return;
     }
+
     if (!["image/jpeg", "image/png", "image/gif"].includes(imageFile.type)) {
       setError("Only JPEG, PNG, and GIF images are allowed");
       setLoading(false);
@@ -143,26 +143,29 @@ export default function AddProductWrapperModal() {
   return (
     <>
       <div
-        className="bg-green-500 custom-button hover:bg-green-800 text-white"
+        className="bg-green-500 custom-button hover:bg-green-800 text-white px-2 py-1 flex"
         onClick={handleModalToggle}
       >
-        + Add Product
+        +<div className="max-md:hidden pl-2"> Add Product</div>
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-auto relative max-w-[900px] mx-4">
+        <div className="fixed inset-0 z-60 flex items-start justify-center px-2 py-4 sm:px-4 backdrop-blur-md overflow-y-auto mt-[4.5rem]">
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-4xl relative">
             <button
               onClick={handleModalToggle}
-              className="close-button absolute top-3 right-3 text-2xl font-bold"
+              className="absolute top-3 right-3 text-2xl font-bold"
             >
               &times;
             </button>
 
-            <h2 className="text-2xl font-semibold mb-4">Product Details</h2>
+            <h2 className="text-xl sm:text-2xl font-semibold mb-4">
+              Product Details
+            </h2>
 
-            <div className="flex flex-wrap flex-col sm:flex-row gap-4">
-              <div className="relative w-[280px] h-96 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center overflow-hidden flex-shrink-0">
+            <div className="flex flex-col md:flex-row gap-4">
+              {/* Image Upload */}
+              <div className="relative w-full h-48 sm:h-56 md:w-[280px] md:h-64 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center overflow-hidden">
                 <input
                   type="file"
                   accept="image/*"
@@ -174,7 +177,7 @@ export default function AddProductWrapperModal() {
                     src={imagePreview}
                     alt="Uploaded"
                     width={280}
-                    height={384}
+                    height={256}
                     className="object-contain w-full h-full"
                     unoptimized
                   />
@@ -183,38 +186,39 @@ export default function AddProductWrapperModal() {
                 )}
               </div>
 
-              <div className="flex flex-col justify-around w-[320px] min-w-[300px] max-w-md flex-shrink-0">
+              {/* Form Fields */}
+              <div className="flex flex-col gap-3 w-full md:w-1/2">
                 <div className="flex items-center gap-2">
-                  <label htmlFor="name" className="min-w-[80px]">
+                  <label htmlFor="name" className="w-20">
                     Name:
                   </label>
                   <input
                     id="name"
                     type="text"
-                    className="input-box"
+                    className="input-box w-full"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
                 <div className="flex items-center gap-2">
-                  <label htmlFor="brand" className="min-w-[80px]">
+                  <label htmlFor="brand" className="w-20">
                     Brand:
                   </label>
                   <input
                     id="brand"
                     type="text"
-                    className="input-box"
+                    className="input-box w-full"
                     value={brand}
                     onChange={(e) => setBrand(e.target.value)}
                   />
                 </div>
                 <div className="flex items-center gap-2">
-                  <label htmlFor="category" className="min-w-[80px]">
+                  <label htmlFor="category" className="w-20">
                     Category:
                   </label>
                   <select
                     id="category"
-                    className="input-box"
+                    className="input-box w-full"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                   >
@@ -227,13 +231,13 @@ export default function AddProductWrapperModal() {
                   </select>
                 </div>
                 <div className="flex items-center gap-2">
-                  <label htmlFor="price" className="min-w-[80px]">
+                  <label htmlFor="price" className="w-20">
                     Price:
                   </label>
                   <input
                     id="price"
                     type="number"
-                    className="input-box"
+                    className="input-box w-full"
                     value={price ?? ""}
                     onChange={(e) =>
                       setPrice(
@@ -243,13 +247,13 @@ export default function AddProductWrapperModal() {
                   />
                 </div>
                 <div className="flex items-center gap-2">
-                  <label htmlFor="stock" className="min-w-[80px]">
+                  <label htmlFor="stock" className="w-20">
                     Stock:
                   </label>
                   <input
                     id="stock"
                     type="number"
-                    className="input-box"
+                    className="input-box w-full"
                     value={stock ?? ""}
                     onChange={(e) =>
                       setStock(e.target.value ? parseInt(e.target.value) : null)
@@ -257,31 +261,31 @@ export default function AddProductWrapperModal() {
                   />
                 </div>
               </div>
+            </div>
 
-              <div className="w-full sm:flex-grow">
-                <div>Description</div>
-                <textarea
-                  className="w-full h-24 p-2 border border-gray-300 rounded-lg"
-                  placeholder="Enter product description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-                {error && <p className="text-red-600 mt-2">{error}</p>}
-
-                <div className="flex items-center justify-end gap-4 mt-4">
-                  <button
-                    className="custom-button hover:bg-red-600 bg-red-400"
-                    onClick={handleModalToggle}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="custom-button hover:bg-green-600 bg-green-400"
-                    onClick={handleSubmit}
-                  >
-                    {loading ? "Adding...." : "Add Product"}
-                  </button>
-                </div>
+            {/* Description and Buttons */}
+            <div className="mt-4">
+              <label>Description</label>
+              <textarea
+                className="w-full h-24 p-2 border border-gray-300 rounded-lg mt-1"
+                placeholder="Enter product description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+              {error && <p className="text-red-600 mt-2">{error}</p>}
+              <div className="flex flex-col sm:flex-row justify-end items-center gap-3 mt-4">
+                <button
+                  className="custom-button bg-red-400 hover:bg-red-600 w-full sm:w-auto"
+                  onClick={handleModalToggle}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="custom-button bg-green-400 hover:bg-green-600 w-full sm:w-auto"
+                  onClick={handleSubmit}
+                >
+                  {loading ? "Adding..." : "Add Product"}
+                </button>
               </div>
             </div>
           </div>

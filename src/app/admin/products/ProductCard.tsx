@@ -30,7 +30,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
     <div
       className={`flex flex-col justify-between p-4 mb-4 rounded-xl backdrop-blur-xl bg-white/10 border border-white/30 shadow-md text-white w-full
         transition-[max-height] duration-500 ease-in-out
-        ${expand ? "max-h-[400px]" : "max-h-[260px] overflow-hidden"}
+
       `}
     >
       <div className="flex flex-col md:grid md:grid-cols-4 gap-4 md:divide-x md:divide-gray-300">

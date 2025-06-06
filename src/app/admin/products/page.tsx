@@ -1,10 +1,6 @@
-import { AdminSearchBar } from "@/components";
+import ProductSearchBar from "./ProductSearchBar";
 import AddProductWrapperModal from "./AddProductWrapperModal";
-import DeleteButton from "./DeleteButton";
 import { connectDB } from "@/lib/mongodb";
-import Image from "next/image";
-import EditButton from "./EditButton";
-import ReadMoreWrapper from "./ReadMoreWrapper";
 import ProductCard from "./ProductCard";
 
 export const revalidate = 0;
@@ -51,10 +47,10 @@ export default async function AdminProductsPage() {
 
   return (
     <div className="flex flex-col">
-      <div className="md:flex items-center justify-between bg-white h-18 w-full px-20 py-4 sticky top-18 z-45 md:px-20">
-        <div className="max-md:hidden text-2xl font-bold">Products</div>
-        <div className="md:flex items-center gap-4">
-          <AdminSearchBar />
+      <div className="flex flex-wrap items-center justify-between bg-white h-auto w-full px-4 md:px-20 py-4 sticky top-18 z-45 gap-2">
+        <div className="hidden md:block text-2xl font-bold">Products</div>
+        <div className="flex items-center gap-2 flex-1 justify-end">
+          <ProductSearchBar />
           <AddProductWrapperModal />
         </div>
       </div>
