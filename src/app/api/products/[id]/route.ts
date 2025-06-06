@@ -145,7 +145,7 @@ export async function PUT(
         imageUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${uploadedImageKey}`;
       } catch (err) {
         return NextResponse.json(
-          { error: "Image upload to AWS S3 failed" },
+          { error: `Image upload to AWS S3 failed. ${err}` },
           { status: 500 }
         );
       }
@@ -192,7 +192,7 @@ export async function PUT(
         );
       } catch (err) {
         console.warn(
-          "Warning: Old image deletion failed. Manual cleanup may be required."
+          `Warning: Old image deletion failed. Manual cleanup may be required. ${err}`
         );
       }
     }

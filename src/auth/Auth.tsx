@@ -1,7 +1,9 @@
+"use client";
 import { useState } from "react";
 
-export default async function Auth() {
+export default function Auth() {
   const [signUp, setSignUp] = useState(true);
+  setSignUp(false);
 
   return (
     <div>
