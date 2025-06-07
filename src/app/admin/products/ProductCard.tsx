@@ -6,22 +6,7 @@ import Image from "next/image";
 import EditButton from "./EditButton";
 import DeleteButton from "./DeleteButton";
 import ReadMoreWrapper from "./ReadMoreWrapper";
-
-interface CategoryType {
-  _id: string;
-  name: string;
-}
-
-interface ProductType {
-  _id: string;
-  name: string;
-  brand: string;
-  image: string;
-  price: number;
-  stock: number;
-  description: string;
-  category?: CategoryType;
-}
+import type { ProductType } from "@/types/products";
 
 export default function ProductCard({ product }: { product: ProductType }) {
   const [expand, setExpand] = useState(false);

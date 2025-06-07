@@ -1,12 +1,16 @@
-// types/Product.ts
-
-export interface Product {
-  productId: string;
+// types/products.ts
+export interface CategoryType {
+  _id: string;
   name: string;
-  description: string;
-  category: string;
+}
+
+export interface ProductType {
+  _id: string;
+  name: string;
+  brand: string;
+  image: string;
   price: number;
   stock: number;
-  brand: string;
-  image: string; // URL or path to the product image
+  description: string;
+  category?: CategoryType;
 }

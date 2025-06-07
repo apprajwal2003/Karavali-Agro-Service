@@ -2,30 +2,14 @@ import ProductSearchBar from "./ProductSearchBar";
 import AddProductWrapperModal from "./AddProductWrapperModal";
 import { connectDB } from "@/lib/mongodb";
 import ProductCard from "./ProductCard";
+import { Product } from "@/models/product";
+import "@/models/category";
+import type { ProductType } from "@/types/products";
 
 export const revalidate = 0;
 
-interface CategoryType {
-  _id: string;
-  name: string;
-}
-
-interface ProductType {
-  _id: string;
-  name: string;
-  brand: string;
-  image: string;
-  price: number;
-  stock: number;
-  description: string;
-  category?: CategoryType;
-}
-
 export default async function AdminProductsPage() {
   await connectDB();
-  const { Product } = await import("@/models/product");
-  const { Category } = await import("@/models/category"); // Ensure Category is imported for type safety
-  void Category; // Prevent unused import warning
 
   const rawProducts = await Product.find({}).populate("category");
 

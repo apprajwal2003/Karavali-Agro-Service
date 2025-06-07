@@ -1,10 +1,6 @@
 import EditButton from "./EditButton";
 import DeleteButton from "./DeleteButton";
-
-interface CategoryType {
-  _id: string;
-  name: string;
-}
+import type { CategoryType } from "@/types/products";
 
 export default async function CategoryCard({
   category,
