@@ -13,4 +13,8 @@ export interface ProductType {
   stock: number;
   description: string;
   category?: CategoryType;
+  rating: {
+    average: number;
+    count: number;
+  };
 }

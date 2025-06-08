@@ -1,13 +1,15 @@
-import CollectionsNavbar from "@/components/CollectionsNavbar";
+import { CollectionsNavbar } from "@/components";
+import { FilterProvider } from "@/context/FilterContext";
+
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <FilterProvider>
       <CollectionsNavbar />
       <div>{children}</div>
-    </div>
+    </FilterProvider>
   );
 }

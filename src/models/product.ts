@@ -19,7 +19,7 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   image: {
-    type: String, // ✅ Changed from Buffer to String
+    type: String,
     required: true,
   },
   stock: {
@@ -29,6 +29,18 @@ const productSchema = new mongoose.Schema({
   description: {
     type: String,
     default: "No description available",
+  },
+  rating: {
+    average: {
+      type: Number,
+      default: 5,
+      min: 1,
+      max: 5,
+    },
+    count: {
+      type: Number,
+      default: 0,
+    },
   },
 });
 
