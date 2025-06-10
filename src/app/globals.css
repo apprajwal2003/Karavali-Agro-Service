@@ -21,3 +21,11 @@ body {
 .close-button {
   @apply text-3xl absolute top-3 right-3 rounded-lg px-2  transition duration-300 ease-in-out hover:scale-110 hover:text-white hover:bg-red-600 cursor-pointer;
 }
+
+/* Inside your globals.css or tailwind.css */
+@layer utilities {
+  .text-stroke-white {
+    -webkit-text-stroke: 1px white;
+    -webkit-text-fill-color: transparent;
+  }
+}

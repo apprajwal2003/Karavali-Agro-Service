@@ -16,16 +16,19 @@ export default function CollectionsNavbar() {
   ];
 
   return (
-    <header className="bg-green-600 sticky top-0 z-10 w-full px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+    <header className="bg-green-500 sticky top-0 z-10 w-full px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
       {/* Logo */}
       <div className="flex items-center gap-4">
         <Image
           src="/logo.png"
           alt="Logo"
-          width={80}
-          height={40}
+          width={50}
+          height={50}
           className="rounded-lg"
         />
+        <h1 className="hidden md:block text-4xl font-extrabold tracking-tighter uppercase bg-gradient-to-r from-orange-500 via-yellow-500 to-green-600 text-transparent bg-clip-text drop-shadow-md text-stroke-white">
+          KARAVALI AGRO SERVICES
+        </h1>
       </div>
 
       {/* Category buttons, search bar, profile */}
@@ -50,7 +53,7 @@ export default function CollectionsNavbar() {
 
         <input
           type="text"
-          placeholder="Search products..."
+          placeholder={`Search ${selectedCategory}...`}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="p-2 rounded border text-white"
