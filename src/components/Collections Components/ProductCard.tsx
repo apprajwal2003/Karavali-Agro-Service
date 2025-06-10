@@ -22,7 +22,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="border p-2 sm:p-4 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 bg-white">
+    <div className="p-2 sm:p-4 rounded-xl shadow-md hover:shadow-2xl transition-shadow duration-200 bg-white h-full">
       <img
         src={product.image}
         alt={product.name}

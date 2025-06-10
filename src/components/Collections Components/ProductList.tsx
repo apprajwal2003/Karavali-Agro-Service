@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import type { ProductType } from "@/types/products";
 import { useFilter } from "@/context/FilterContext";
 import ProductCard from "./ProductCard";
@@ -32,12 +33,14 @@ export default function Product({ products }: ProductProps) {
     <div className="p-4">
       <h1 className="text-xl font-bold mb-4">All Products</h1>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4 overflow-auto">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4 overflow-auto pb-10">
         {filteredProducts.length === 0 && (
           <p className="text-center col-span-full">No products found</p>
         )}
         {filteredProducts.map((product) => (
-          <ProductCard key={product._id} product={product} />
+          <Link key={product._id} href={`/collections/${product._id}`}>
+            <ProductCard product={product} />
+          </Link>
         ))}
       </div>
     </div>

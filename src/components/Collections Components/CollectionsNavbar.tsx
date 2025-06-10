@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useFilter } from "@/context/FilterContext";
+import Link from "next/link";
 
 export default function CollectionsNavbar() {
   const { search, selectedCategory, setSearch, setSelectedCategory } =
@@ -18,25 +19,34 @@ export default function CollectionsNavbar() {
   return (
     <header className="bg-green-500 sticky top-0 z-10 w-full px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
       {/* Logo */}
-      <div className="flex items-center gap-4">
-        <Image
-          src="/logo.png"
-          alt="Logo"
-          width={50}
-          height={50}
-          className="rounded-lg"
-        />
-        <h1 className="hidden md:block text-4xl font-extrabold tracking-tighter uppercase bg-gradient-to-r from-orange-500 via-yellow-500 to-green-600 text-transparent bg-clip-text drop-shadow-md text-stroke-white">
-          KARAVALI AGRO SERVICES
-        </h1>
-      </div>
+      <Link
+        href={"/collections"}
+        onClick={() => {
+          setSelectedCategory("");
+          setSearch("");
+        }}
+      >
+        <div className="flex items-center gap-4">
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={50}
+            height={50}
+            className="rounded-lg"
+          />
+          <h1 className="hidden md:block text-4xl font-extrabold tracking-tighter uppercase bg-gradient-to-r from-orange-500 via-yellow-500 to-green-600 text-transparent bg-clip-text drop-shadow-md text-stroke-white">
+            KARAVALI AGRO SERVICES
+          </h1>
+        </div>
+      </Link>
 
       {/* Category buttons, search bar, profile */}
       <div className="flex flex-wrap items-center gap-4 text-white">
         {navItems.map(({ name, value }) => {
           const isActive = selectedCategory === value;
           return (
-            <button
+            <Link
+              href={`/collections`}
               key={name}
               onClick={() => {
                 setSelectedCategory(value);
@@ -47,7 +57,7 @@ export default function CollectionsNavbar() {
               }`}
             >
               {name}
-            </button>
+            </Link>
           );
         })}
 
