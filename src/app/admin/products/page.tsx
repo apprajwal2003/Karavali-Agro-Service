@@ -21,6 +21,7 @@ export default async function AdminProductsPage() {
     price: product.price,
     stock: product.stock,
     description: product.description,
+    rating: product.rating,
     category: product.category
       ? {
           _id: product.category._id.toString(),

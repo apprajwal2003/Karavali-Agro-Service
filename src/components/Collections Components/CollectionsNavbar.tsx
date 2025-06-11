@@ -34,14 +34,14 @@ export default function CollectionsNavbar() {
             height={50}
             className="rounded-lg"
           />
-          <h1 className="hidden md:block text-4xl font-extrabold tracking-tighter uppercase bg-gradient-to-r from-orange-500 via-yellow-500 to-green-600 text-transparent bg-clip-text drop-shadow-md text-stroke-white">
+          <h1 className="text-4xl font-extrabold tracking-tighter uppercase bg-gradient-to-r from-orange-500 via-yellow-500 to-green-600 text-transparent bg-clip-text drop-shadow-md text-stroke-white">
             KARAVALI AGRO SERVICES
           </h1>
         </div>
       </Link>
 
       {/* Category buttons, search bar, profile */}
-      <div className="flex flex-wrap items-center gap-4 text-white">
+      <div className="hidden md:flex flex-wrap items-center gap-4 text-white">
         {navItems.map(({ name, value }) => {
           const isActive = selectedCategory === value;
           return (
@@ -52,7 +52,7 @@ export default function CollectionsNavbar() {
                 setSelectedCategory(value);
                 setSearch("");
               }}
-              className={`px-2 py-2 rounded hover:bg-green-800 transition-all ${
+              className={`hover:bg-green-800 custom-button ${
                 isActive && "bg-green-800"
               }`}
             >
@@ -66,7 +66,7 @@ export default function CollectionsNavbar() {
           placeholder={`Search ${selectedCategory}...`}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="p-2 rounded border text-white"
+          className="hidden md:block p-2 rounded border text-white"
         />
 
         <Image
@@ -74,7 +74,7 @@ export default function CollectionsNavbar() {
           width={40}
           height={40}
           alt="Profile"
-          className="rounded-full border-2 border-white"
+          className="hidden md:block rounded-full border-2 border-white hover:scale-110 transition-transform cursor-pointer"
         />
       </div>
     </header>

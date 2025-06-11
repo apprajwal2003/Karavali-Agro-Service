@@ -4,10 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 import type { ProductType } from "@/types/products";
 
-interface ProductViewProps {
-  product: ProductType;
-}
-
 export default function ProductView({ product }: { product: ProductType }) {
   const [quantity, setQuantity] = useState(1);
 
@@ -21,6 +17,7 @@ export default function ProductView({ product }: { product: ProductType }) {
           width={500}
           height={500}
           className="object-contain max-h-[500px] w-full rounded-md border"
+          unoptimized
         />
       </div>
 

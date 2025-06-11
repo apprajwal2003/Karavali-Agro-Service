@@ -5,11 +5,12 @@ import ProductView from "./ProductView";
 export default async function ProductPage({
   params,
 }: {
-  params: { productid: string };
+  params: Promise<{ productid: string }>;
 }) {
   await connectDB();
+  const { productid } = await params;
 
-  const product = await Product.findById(params.productid).populate("category");
+  const product = await Product.findById(productid).populate("category");
 
   if (!product) return <div>Product not found</div>;
 
