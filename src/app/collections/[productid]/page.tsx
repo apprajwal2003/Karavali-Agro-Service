@@ -2,6 +2,16 @@ import { connectDB } from "@/lib/mongodb";
 import { Product } from "@/models/product";
 import ProductView from "./ProductView";
 
+export async function generateStaticParams() {
+  await connectDB();
+  // Fetch all product IDs to generate static paths
+  return Product.find({}, "_id").then((products) =>
+    products.map((product) => ({
+      productid: product._id.toString(),
+    }))
+  );
+}
+
 export default async function ProductPage({
   params,
 }: {
