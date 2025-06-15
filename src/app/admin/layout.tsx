@@ -1,4 +1,5 @@
 import { AdminNavbar } from "@/components";
+import { FilterProvider } from "@/context/FilterContext";
 
 export default function AdminLayout({
   children,
@@ -7,8 +8,10 @@ export default function AdminLayout({
 }) {
   return (
     <div>
-      <AdminNavbar />
-      <div>{children}</div>
+      <FilterProvider>
+        <AdminNavbar />
+        <div>{children}</div>
+      </FilterProvider>
     </div>
   );
 }
