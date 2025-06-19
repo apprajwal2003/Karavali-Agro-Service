@@ -42,7 +42,7 @@ export default async function AdminProductsPage() {
 
       <div className="min-h-screen overflow-auto px-4 md:px-20 py-4 pt-24 grid grid-cols-1 md:grid-cols-2 gap-6 bg-gradient-to-br from-gray-800 to-gray-900">
         {products.map((product) => (
-          <ProductCard key={product._id} product={product} />
+          <ProductCard key={product._id.toString()} product={product} />
         ))}
       </div>
     </div>
