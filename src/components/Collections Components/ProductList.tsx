@@ -33,7 +33,7 @@ export default function Product({ products }: ProductProps) {
     <div className="p-4">
       <h1 className="text-xl font-bold mb-4">All Products</h1>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-4 overflow-auto pb-10">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 overflow-auto pb-10">
         {filteredProducts.length === 0 && (
           <p className="text-center col-span-full">No products found</p>
         )}

@@ -34,8 +34,8 @@ export default function CollectionsNavbar() {
             height={50}
             className="rounded-lg"
           />
-          <h1 className="text-4xl font-extrabold tracking-tighter uppercase bg-gradient-to-r from-orange-500 via-yellow-500 to-green-600 text-transparent bg-clip-text drop-shadow-md text-stroke-white">
-            KARAVALI AGRO SERVICES
+          <h1 className="text-2xl md:text-4xl font-extrabold tracking-tighter uppercase bg-gradient-to-r from-orange-500 via-yellow-500 to-green-600 text-transparent bg-clip-text drop-shadow-md text-stroke-white">
+            KARAVALI <span className="hidden md:inline">AGRO SERVICES</span>
           </h1>
         </div>
       </Link>
