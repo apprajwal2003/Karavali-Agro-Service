@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useFilter } from "@/context/FilterContext";
+// import { useFilter } from "@/context/FilterContext";
 
 // This component is a modal for adding a new category.
 // It includes a form with an input field for the category name and buttons to cancel or submit the form.
@@ -11,7 +11,7 @@ export default function AddCategoryWrapperModal() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
-  const { search, setSearch } = useFilter();
+  // const { search, setSearch } = useFilter();
 
   const handleModalToggle = () => {
     setShowModal(!showModal);
