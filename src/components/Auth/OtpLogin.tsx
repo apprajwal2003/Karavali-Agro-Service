@@ -16,7 +16,7 @@ declare global {
 
 export default function OtpInput() {
   const [phoneNumber, setPhoneNumber] = useState("");
-  // const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState("");
   const [resendCountDown, setResendCountDown] = useState(0);
